@@ -3,108 +3,93 @@ package com.example.lab2
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import coil.compose.rememberAsyncImagePainter
-import com.example.lab2.ui.theme.Lab2Theme
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val books = listOf(
-            Book("Book 1", arrayOf("history", "fantasy"), ReadingStatus.Reading, "https://play-lh.googleusercontent.com/_tslXR7zUXgzpiZI9t70ywHqWAxwMi8LLSfx8Ab4Mq4NUTHMjFNxVMwTM1G0Q-XNU80"),
-            Book("Book 2", arrayOf("romance", "long"), ReadingStatus.Not_started, "https://play-lh.googleusercontent.com/_tslXR7zUXgzpiZI9t70ywHqWAxwMi8LLSfx8Ab4Mq4NUTHMjFNxVMwTM1G0Q-XNU80"),
-            Book("Book 3", arrayOf("action", "war"), ReadingStatus.Finished, "https://play-lh.googleusercontent.com/_tslXR7zUXgzpiZI9t70ywHqWAxwMi8LLSfx8Ab4Mq4NUTHMjFNxVMwTM1G0Q-XNU80"),
-            Book("Book 4", arrayOf("adventure"), ReadingStatus.Reading, "https://play-lh.googleusercontent.com/_tslXR7zUXgzpiZI9t70ywHqWAxwMi8LLSfx8Ab4Mq4NUTHMjFNxVMwTM1G0Q-XNU80"),
-            Book("Book 5", arrayOf("detective"), ReadingStatus.Finished, "https://play-lh.googleusercontent.com/_tslXR7zUXgzpiZI9t70ywHqWAxwMi8LLSfx8Ab4Mq4NUTHMjFNxVMwTM1G0Q-XNU80"),
-            Book("Book 6", arrayOf("classic", "horror"), ReadingStatus.Not_started, "https://play-lh.googleusercontent.com/_tslXR7zUXgzpiZI9t70ywHqWAxwMi8LLSfx8Ab4Mq4NUTHMjFNxVMwTM1G0Q-XNU80"),
-        )
         setContent {
-            Lab2Theme {
-                Column {
-                    Text(text = "Something to read", fontSize = 25.sp)
-                    LazyVerticalGrid(
-                        columns = GridCells.Fixed(2),
-                        ) {
-                        items(books.filter { book -> book.status != ReadingStatus.Finished }.sortedBy { it -> it.status }) {
-                                book -> BookCard(book = book)
-                        }
-                    }
-                    Text(text = "Finished", fontSize = 25.sp)
-                    LazyVerticalGrid(
-                        columns = GridCells.Fixed(2),
-                    ) {
-                        items(books.filter { book -> book.status == ReadingStatus.Finished }) {
-                                book -> BookCard(book = book)
-                        }
-                    }
-                }
+            var useDarkTheme by rememberSaveable { mutableStateOf(false) }
+            fun toggleTheme() {
+                useDarkTheme = !useDarkTheme
+            }
+            AppTheme(useDarkTheme) {
+                MainScreen(toggleTheme = { toggleTheme() })
             }
         }
     }
 }
 
 @Composable
-fun BookCard(book: Book) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(10.dp)
-    ) {
-        Image(painter = rememberAsyncImagePainter(book.imageUrl), contentDescription = null, modifier = Modifier.size(60.dp))
-        Spacer(modifier = Modifier.width(10.dp))
-        Column {
-            BookStatus(status = book.status)
-            Text(text = book.name, fontSize = 20.sp, modifier = Modifier.fillMaxSize())
-            BookGenres(genres = book.genres)
-        }       
-    }
-}
-
-@Composable
-fun BookStatus(status: ReadingStatus) {
-    val color = when(status) {
-        ReadingStatus.Reading -> Color.Blue
-        ReadingStatus.Finished -> Color.Red
-        ReadingStatus.Not_started -> Color.DarkGray
-    }
-
-    Text(
-        text = status.toString(),
-        color = Color.White,
-        modifier = Modifier
-            .background(color = color)
-            .padding(2.dp)
-
+fun AppTheme(useDarkTheme: Boolean, content: @Composable () -> Unit) {
+    val LightColorScheme = lightColorScheme(
+        primary = Color(0xFF6200EE),
+        onPrimary = Color.White,
+        primaryContainer = Color(0xFF3700B3),
+        onPrimaryContainer = Color.White,
+        secondary = Color(0xFF03DAC6),
+        onSecondary = Color.Black,
+        secondaryContainer = Color(0xFF018786),
+        onSecondaryContainer = Color.White,
+        background = Color(0xFFF6F6F6),
+        onBackground = Color.Black,
+        surface = Color.White,
+        onSurface = Color.Black,
+        error = Color(0xFFB00020),
+        onError = Color.White,
+        // Додайте інші кольори за потреби
     )
+
+    val DarkColorScheme = darkColorScheme(
+        primary = Color(0xFFBB86FC),
+        onPrimary = Color.Black,
+        primaryContainer = Color(0xFF3700B3),
+        onPrimaryContainer = Color.Black,
+        secondary = Color(0xFF03DAC6),
+        onSecondary = Color.White,
+        secondaryContainer = Color(0xFF03DAC6),
+        onSecondaryContainer = Color.Black,
+        background = Color(0xFF121212),
+        onBackground = Color.White,
+        surface = Color(0xFF121212),
+        onSurface = Color.White,
+        error = Color(0xFFCF6679),
+        onError = Color.Black,
+        // Додайте інші кольори за потреби
+    )
+
+    val colors = if (useDarkTheme) DarkColorScheme else LightColorScheme
+
+    MaterialTheme(colorScheme = colors) {
+        Surface(modifier = Modifier.fillMaxSize()){
+            content()
+        }
+    }
 }
 
 @Composable
-fun BookGenres(genres: Array<String>) {
-    val sortedGenres = genres.sortedBy { it }
-
-    LazyRow(modifier = Modifier.width(500.dp)) {
-        items(sortedGenres) { genre ->
-            Text(text = genre, color = Color.DarkGray)
-            Spacer(modifier = Modifier.width(5.dp))
-        }
+fun MainScreen(toggleTheme: () -> Unit) {
+    val navController = rememberNavController()
+    val bookViewModel = BooksViewModel()
+    NavHost(navController = navController, startDestination = "bookList") {
+        composable("bookList") { BookListScreen(navController, bookViewModel, toggleTheme) }
+        composable("addBook") { AddBookScreen(navController, AddBookViewModel(), bookViewModel) }
+        composable("userProfile") { UserProfileScreen(navController) }
     }
 }
