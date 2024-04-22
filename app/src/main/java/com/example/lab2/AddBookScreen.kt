@@ -7,20 +7,19 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Button
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.RadioButton
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Button
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,7 +39,6 @@ class AddBookViewModel : ViewModel() {
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddBookScreen(navController: NavController, addViewModel: AddBookViewModel, booksViewModel: BooksViewModel) {
     Scaffold(
@@ -56,7 +54,7 @@ fun AddBookScreen(navController: NavController, addViewModel: AddBookViewModel, 
         }
     ) { padding ->
         Box(modifier=Modifier.padding(padding)) {
-            Column(modifier = Modifier.fillMaxWidth().padding(16.dp, 0.dp)) {
+            Column(modifier = Modifier.fillMaxWidth().padding(16.dp, 10.dp)) {
                 TextField(
                     value = addViewModel.bookName,
                     onValueChange = { addViewModel.bookName = it },
@@ -98,14 +96,14 @@ fun GenreDropdownMenu(selectedGenre: String, onGenreSelect: (String) -> Unit, ge
     Column(modifier = Modifier.padding(top = 10.dp, bottom = 10.dp)) {
         Text(text = "Жанр")
         Box(modifier = Modifier.fillMaxWidth().clickable(onClick = { expanded.value = true })) {
-            Text(selectedText, modifier = Modifier.background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.09F)).fillMaxWidth().padding(5.dp, 15.dp))
+            Text(selectedText, modifier = Modifier.fillMaxWidth().padding(5.dp, 15.dp))
             DropdownMenu(
                 expanded = expanded.value,
                 onDismissRequest = { expanded.value = false }
             ) {
                 genres.forEach { genre ->
                     DropdownMenuItem(
-                        text = { Text(genre) },
+                        content = { Text(genre) },
                         onClick = {
                             onGenreSelect(genre)
                             expanded.value = false

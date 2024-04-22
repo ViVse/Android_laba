@@ -50,22 +50,25 @@ android {
 }
 
 dependencies {
+    // Coil for image loading in Compose
     implementation("io.coil-kt:coil-compose:2.6.0")
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
-    implementation(libs.androidx.navigation.compose)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
+    // Kotlin and Compose
+    implementation("androidx.core:core-ktx:1.8.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0")
+    implementation("androidx.activity:activity-compose:1.5.0")
+    implementation(platform("androidx.compose:compose-bom:2023.01.00")) // Use the latest BOM
+    implementation("androidx.compose.ui:ui:1.2.0") // Specified for clarity, BOM manages this
+    implementation("androidx.compose.material:material:1.2.0") // Ensure this is added
+    implementation("androidx.navigation:navigation-compose:2.5.1") // Make sure to use a compatible version
+
+    // Testing
+    testImplementation("junit:junit:4.13.2")
+    androidTestImplementation("androidx.test.ext:junit:1.1.4")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.0")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.2.0")
+
+    // Debugging
+    debugImplementation("androidx.compose.ui:ui-tooling:1.2.0")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.2.0")
 }

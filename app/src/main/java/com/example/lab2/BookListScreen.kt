@@ -10,19 +10,17 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.Divider
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.Divider
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.Alignment
@@ -32,26 +30,14 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BookListScreen(navController: NavController, viewModel: BooksViewModel, toggleTheme: () -> Unit) {
+fun BookListScreen(navController: NavController, viewModel: BooksViewModel) {
     val books = viewModel.books
 
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text("Список книг") },
-                actions = {
-                    IconButton(onClick = { navController.navigate("addBook") }) {
-                        Icon(Icons.Filled.Add, contentDescription = "Додати книгу")
-                    }
-                    IconButton(onClick = { toggleTheme() }) {
-                        Icon(Icons.Default.Settings, contentDescription = "Змінити тему")
-                    }
-                    IconButton(onClick = { navController.navigate("userProfile") }) {
-                        Icon(Icons.Filled.AccountCircle, contentDescription = "Профіль")
-                    }
-                }
             )
         }
     ) { padding ->
