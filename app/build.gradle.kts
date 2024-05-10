@@ -60,13 +60,15 @@ dependencies {
     implementation(platform("androidx.compose:compose-bom:2023.01.00")) // Use the latest BOM
     implementation("androidx.compose.ui:ui:1.2.0") // Specified for clarity, BOM manages this
     implementation("androidx.compose.material:material:1.2.0") // Ensure this is added
-    implementation("androidx.navigation:navigation-compose:2.5.1") // Make sure to use a compatible version
+    implementation("androidx.navigation:navigation-compose:2.5.1")
+    implementation(libs.androidx.navigation.testing) // Make sure to use a compatible version
 
     // Testing
     testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.4")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.0")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.2.0")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.6.6")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4-android:1.6.6@arr")
+    androidTestImplementation("androidx.test.ext:junit-ktx:1.1.3")
 
     // Debugging
     debugImplementation("androidx.compose.ui:ui-tooling:1.2.0")

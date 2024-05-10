@@ -16,33 +16,35 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.lab2.ui.theme.AppTheme
 
 class MainActivity : ComponentActivity() {
+    private var setContentLambda: (@Composable () -> Unit)? = null
+
+    fun setTestContent(content: @Composable () -> Unit) {
+        setContentLambda = content
+        setContent { setContentLambda?.invoke() }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            var useDarkTheme by rememberSaveable { mutableStateOf(false) }
-            fun toggleTheme() {
-                useDarkTheme = !useDarkTheme
-            }
-            AppTheme(useDarkTheme) {
-                MainScreen()
-            }
+            setContentLambda?.invoke() ?: AppTheme(useDarkTheme = false) {
+                MainScreen(navController = rememberNavController())
+            } // Default to MainScreen if not overridden
         }
     }
 }
 
-@Preview
 @Composable
-fun MainScreen() {
+fun MainScreen(navController: NavHostController) {
     val bookViewModel = BooksViewModel()
     BoxWithConstraints {
-        val navController = rememberNavController()
-
         if (maxWidth > 840.dp) {
             Row(modifier = Modifier.fillMaxSize()) {
                 PermanentNavigationDrawerComponent(navController = navController, modifier = Modifier.width(250.dp))

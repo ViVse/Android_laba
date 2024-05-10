@@ -17,10 +17,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.Alignment
@@ -41,21 +38,21 @@ fun BookListScreen(navController: NavController, viewModel: BooksViewModel) {
             )
         }
     ) { padding ->
-        BookList(books = books, modifier = Modifier.padding(padding))
+        BookList(books = books, modifier = Modifier.padding(padding), viewModel = viewModel)
     }
 }
 
 @Composable
-fun BookList(books: MutableList<Book>, modifier: Modifier = Modifier) {
+fun BookList(books: MutableList<Book>, viewModel: BooksViewModel, modifier: Modifier = Modifier) {
     LazyColumn(modifier = modifier) {
         itemsIndexed(books) { index, book ->
-            BookRow(book = book, fun(): Book = books.removeAt(index) )
+            BookRow(book = book, fun(): Unit = viewModel.removeBook(index) )
         }
     }
 }
 
 @Composable
-fun BookRow(book: Book, removeBook: () -> Book, modifier: Modifier = Modifier, ) {
+fun BookRow(book: Book, removeBook: () -> Unit, modifier: Modifier = Modifier, ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -87,5 +84,9 @@ class BooksViewModel : ViewModel() {
     fun addBook(name: String, genres: Array<String>, status: ReadingStatus, imageUrl: String) {
         val newBook = Book(name, genres, status, imageUrl)
         _books.add(newBook)
+    }
+
+    fun removeBook(index: Int) {
+        _books.removeAt(index)
     }
 }
